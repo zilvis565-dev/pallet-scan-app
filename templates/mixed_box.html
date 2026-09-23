@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block title %}Mišri dėžė{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <h1>Mišri dėžė</h1>
+            <p>Pallet {{ current_pallet }} | Order number (reference): {{ order_number if order_number else "—" }}</p>
+        </div>
+    </div>
+
+    <form method="post" class="scan-form">
+        <input type="hidden" name="action" value="add">
+        <div class="grid-2">
+            <div>
+                <label>Gaminio kodas</label>
+                <input type="text" name="part_code" placeholder="Įvesk arba skenuok kodą" required>
+            </div>
+            <div>
+                <label>PCS</label>
+                <input type="number" name="pcs" value="1" min="1" required>
+            </div>
+        </div>
+        <button type="submit" class="btn full">Pridėti į mišrią dėžę</button>
+    </form>
+
+    <h2>Mišrios dėžės turinys</h2>
+    <table>
+        <tr>
+            <th>Code</th>
+            <th>Description</th>
+            <th>PCS</th>
+        </tr>
+        {% for line in mixed_box_lines %}
+        <tr>
+            <td>{{ line.part_code }}</td>
+            <td>{{ line.description }}</td>
+            <td>{{ line.pcs }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="actions" style="margin-top: 20px;">
+        <form method="post">
+            <input type="hidden" name="action" value="save">
+            <button type="submit" class="btn">Išsaugoti mišrią dėžę</button>
+        </form>
+
+        <form method="post">
+            <input type="hidden" name="action" value="cancel">
+            <button type="submit" class="btn-small danger">Atšaukti</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

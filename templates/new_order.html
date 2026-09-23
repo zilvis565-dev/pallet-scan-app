@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}Naujas užsakymas{% endblock %}
+
+{% block content %}
+<div class="card narrow">
+    <h1>Naujas užsakymas</h1>
+    <form method="post">
+        <label>Order number (reference)</label>
+        <input type="text" name="order_number" placeholder="Optional">
+
+        <button type="submit" class="btn full">Pradėti</button>
+    </form>
+</div>
+{% endblock %}

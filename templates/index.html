@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Naujas užsakymas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Naujas užsakymas</h1>
+        <form method="post">
+            <input type="text" name="order_number" placeholder="Užsakymo numeris" required>
+            <input type="number" name="total_pallets" placeholder="Bendras palečių skaičius" required>
+            <button type="submit">Pradėti</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block title %}
+{% if mode == "edit" %}Redaguoti paletę{% else %}Baigti paletę{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="card narrow">
+    {% if mode == "edit" %}
+        <h1>Redaguoti paletę {{ pallet.pallet_number }}</h1>
+        <form method="post">
+            <label>Ilgis</label>
+            <input type="number" name="length" value="{{ pallet.length }}" required>
+
+            <label>Plotis</label>
+            <input type="number" name="width" value="{{ pallet.width }}" required>
+
+            <label>Aukštis</label>
+            <input type="number" name="height" value="{{ pallet.height }}" required>
+
+            <label>Svoris</label>
+            <input type="number" step="0.01" name="weight" value="{{ pallet.weight }}" required>
+
+            <button type="submit" class="btn full">Išsaugoti pakeitimus</button>
+        </form>
+    {% else %}
+        <h1>Paletės duomenys</h1>
+        <form method="post">
+            <label>Ilgis</label>
+            <input type="number" name="length" required>
+
+            <label>Plotis</label>
+            <input type="number" name="width" required>
+
+            <label>Aukštis</label>
+            <input type="number" name="height" required>
+
+            <label>Svoris</label>
+            <input type="number" step="0.01" name="weight" required>
+
+            <button type="submit" class="btn full">Išsaugoti paletę</button>
+        </form>
+    {% endif %}
+</div>
+{% endblock %}

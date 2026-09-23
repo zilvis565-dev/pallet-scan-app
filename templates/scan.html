@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Skenavimas{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <h1>Pallet {{ current_pallet }}</h1>
+            <p>Order number (reference): {{ order_number if order_number else "—" }}</p>
+        </div>
+        <div class="actions">
+            <a href="{{ url_for('mixed_box') }}" class="btn secondary">Mišri dėžė</a>
+            <a href="{{ url_for('finish_pallet') }}" class="btn secondary">Baigti paletę</a>
+        </div>
+    </div>
+
+    <form method="post" class="scan-form">
+        <div class="grid-2">
+            <div>
+                <label>Skenuok barkodą</label>
+                <input type="text" name="part_code" placeholder="Skenuok barkodą" autofocus required>
+            </div>
+            <div>
+                <label>PCS vienoje dėžėje</label>
+                <input type="number" name="pcs_per_box" value="1" min="1" required>
+            </div>
+        </div>
+        <button type="submit" class="btn full">Pridėti</button>
+    </form>
+
+    <h2>Einamos paletės sąrašas</h2>
+    <table>
+        <tr>
+            <th>Code</th>
+            <th>Description</th>
+            <th>PCS</th>
+            <th>Boxes qty</th>
+            <th>PCS/box</th>
+        </tr>
+        {% for code, item in lines.items() %}
+        <tr>
+            <td>{{ code }}</td>
+            <td>{{ item.description }}</td>
+            <td>{{ item.pcs }}</td>
+            <td>{{ item.boxes_qty }}</td>
+            <td>{{ item.pcs_per_box }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="totals-box">
+        <div class="total-item">
+            <span class="total-label">Total PCS</span>
+            <span class="total-value">{{ total_pcs }}</span>
+        </div>
+        <div class="total-item">
+            <span class="total-label">Total box quantity</span>
+            <span class="total-value">{{ total_boxes }}</span>
+        </div>
+    </div>
+</div>
+{% endblock %}

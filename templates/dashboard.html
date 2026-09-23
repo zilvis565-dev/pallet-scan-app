@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <h1>Shipment sąrašas</h1>
+        <a href="{{ url_for('new_order') }}" class="btn">+ Naujas užsakymas</a>
+    </div>
+
+    <table>
+        <tr>
+            <th>ID</th>
+            <th>Order number (reference)</th>
+            <th>Created</th>
+            <th>Veiksmai</th>
+        </tr>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.order_number if order.order_number else "—" }}</td>
+            <td>{{ order.created_at }}</td>
+            <td class="actions">
+                <a class="btn-small" href="{{ url_for('order_detail', order_id=order.id) }}">Atidaryti</a>
+                <a class="btn-small secondary" href="{{ url_for('export_order', order_id=order.id) }}">Export Excel</a>
+                <form method="post" action="{{ url_for('delete_order', order_id=order.id) }}" onsubmit="return confirm('Tikrai ištrinti visą užsakymą su visomis paletėmis?');">
+                    <button type="submit" class="btn-small danger">Trinti</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

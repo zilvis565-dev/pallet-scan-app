@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}Užsakymo peržiūra{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div class="card-header">
+        <div>
+            <h1>Order</h1>
+            <p>Order number (reference): {{ order.order_number if order.order_number else "—" }}</p>
+            <p>Created: {{ order.created_at }}</p>
+        </div>
+        <div class="actions">
+            <a href="{{ url_for('start_pallet', order_id=order.id) }}" class="btn">+ Pridėti paletę</a>
+            <a href="{{ url_for('export_order', order_id=order.id) }}" class="btn secondary">Export Excel</a>
+        </div>
+    </div>
+
+    <div class="totals-box">
+        <div class="total-item">
+            <span class="total-label">Total PCS</span>
+            <span class="total-value">{{ total_pcs }}</span>
+        </div>
+        <div class="total-item">
+            <span class="total-label">Total box quantity</span>
+            <span class="total-value">{{ total_boxes }}</span>
+        </div>
+        <div class="total-item">
+            <span class="total-label">Total weight</span>
+            <span class="total-value">{{ total_weight }}</span>
+        </div>
+    </div>
+
+    {% for item in pallet_data %}
+    <div class="pallet-card">
+        <div class="pallet-header">
+            <div>
+                <h2>Paletė {{ item.pallet.pallet_number }}</h2>
+                <p>{{ item.pallet.pallet_code }}</p>
+                <p>
+                    Measurements: {{ item.pallet.length }}x{{ item.pallet.width }}x{{ item.pallet.height }}
+                    | Weight: {{ item.pallet.weight }}
+                </p>
+            </div>
+            <div class="actions">
+                <a href="{{ url_for('edit_pallet', pallet_id=item.pallet.id) }}" class="btn-small">Redaguoti paletę</a>
+                <form method="post" action="{{ url_for('delete_pallet', pallet_id=item.pallet.id) }}" onsubmit="return confirm('Tikrai ištrinti šią paletę su visomis eilutėmis?');">
+                    <button type="submit" class="btn-small danger">Trinti paletę</button>
+                </form>
+            </div>
+        </div>
+
+        <table>
+            <tr>
+                <th>Code</th>
+                <th>Description</th>
+                <th>PCS</th>
+                <th>Boxes qty</th>
+                <th>PCS/box</th>
+                <th>Veiksmai</th>
+            </tr>
+            {% for line in item.lines %}
+            <tr>
+                <form method="post" action="{{ url_for('edit_line', line_id=line.id) }}">
+                    <td>{{ line.part_code }}</td>
+                    <td><input type="text" name="description" value="{{ line.description }}"></td>
+                    <td><input type="number" name="pcs" value="{{ line.pcs }}"></td>
+                    <td><input type="number" name="boxes_qty" value="{{ line.boxes_qty }}"></td>
+                    <td>{{ line.pcs_per_box }}</td>
+                    <td class="actions">
+                        <button type="submit" class="btn-small">Saugoti</button>
+                </form>
+                <form method="post" action="{{ url_for('delete_line', line_id=line.id) }}" onsubmit="return confirm('Tikrai trinti eilutę?');">
+                        <button type="submit" class="btn-small danger">Trinti</button>
+                </form>
+                    </td>
+            </tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
